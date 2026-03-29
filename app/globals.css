@@ -1,26 +1,279 @@
 @import "tailwindcss";
 
+/* =========================
+   Global Theme Variables
+   ========================= */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* App-level foreground only */
+  --foreground: #ffffff;
+
+  /* Global app background gradient */
+  --app-background: linear-gradient(133.95deg, #110401 14.32%, #0b070a 73.89%);
 }
 
+/* Tailwind theme bridge */
 @theme inline {
-  --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
+/* Brand stays same in dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #ffffff;
+    --app-background: linear-gradient(133.95deg, #110401 14.32%, #0b070a 73.89%);
   }
 }
 
+/* =========================
+   Base HTML / BODY
+   ========================= */
+html {
+  scroll-behavior: smooth;
+}
+
+html,
 body {
-  background: var(--background);
+  width: 100%;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100dvh;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--app-background);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+
+  /* Default app font */
+  font-family: var(--font-inter), var(--font-bricolage), Helvetica, Arial, sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Root wrappers */
+#__next,
+[data-nextjs-scroll-focus-boundary] {
+  min-height: 100dvh;
+}
+
+/* =========================
+   Hide Scrollbars (Global)
+   ========================= */
+
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  display: none;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: none; /* hides scrollbar */
+}
+
+/* IE / old Edge */
+* {
+  -ms-overflow-style: none;
+}
+
+/* =========================
+   Reckless Headings (OPT-IN)
+   ========================= */
+.welcome-heading {
+  font-family: var(--font-reckless), serif;
+  font-weight: 300;
+  line-height: normal;
+
+  font-variant-numeric: lining-nums proportional-nums;
+  font-feature-settings:
+    "dlig" on,
+    "ss02" on,
+    "ss05" on,
+    "ss07" on,
+    "ss10" on;
+
+  display: inline-block;
+
+  background: linear-gradient(101deg, #ffffff 26.55%, #83634e 98.12%);
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.beast-heading {
+  font-family: var(--font-reckless), serif;
+  font-weight: 300;
+  line-height: normal;
+  font-variant-numeric: lining-nums proportional-nums;
+  font-feature-settings:
+    "dlig" on,
+    "ss02" on,
+    "ss05" on,
+    "ss07" on,
+    "ss10" on;
+  display: inline-block;
+}
+
+.product-heading {
+  font-family: var(--font-reckless), serif;
+  font-weight: 300;
+  line-height: normal;
+
+  font-variant-numeric: lining-nums proportional-nums;
+  font-feature-settings:
+    "dlig" on,
+    "ss02" on,
+    "ss05" on,
+    "ss07" on,
+    "ss10" on;
+
+  display: inline-block;
+
+  /* TEXT GRADIENT (from screenshot) */
+  background: linear-gradient(
+    180deg,
+    #F7D9CB 0%,
+    rgba(247, 217, 203, 0.64) 100%
+  );
+
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================================
+   Fade-on-scroll (edge fade) — X AXIS
+   Toggle via: data-fade-left="1/0" and data-fade-right="1/0"
+   ========================================================= */
+
+.fade-x-on-scroll {
+  --fade-size: 36px; /* tweak: 24–56px for ticker row */
+}
+
+.fade-x-on-scroll[data-fade-left="0"][data-fade-right="0"] {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+/* left only */
+.fade-x-on-scroll[data-fade-left="1"][data-fade-right="0"] {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 var(--fade-size), #000 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 var(--fade-size), #000 100%);
+}
+
+/* right only */
+.fade-x-on-scroll[data-fade-left="0"][data-fade-right="1"] {
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 calc(100% - var(--fade-size)), transparent 100%);
+  mask-image: linear-gradient(to right, #000 0%, #000 calc(100% - var(--fade-size)), transparent 100%);
+}
+
+/* both left + right */
+.fade-x-on-scroll[data-fade-left="1"][data-fade-right="1"] {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 var(--fade-size),
+    #000 calc(100% - var(--fade-size)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 var(--fade-size),
+    #000 calc(100% - var(--fade-size)),
+    transparent 100%
+  );
+}
+
+/* helps on Safari/iOS */
+.fade-x-on-scroll {
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+/* =========================================================
+   Fade-on-scroll base
+   ========================================================= */
+
+.fade-on-scroll {
+  --fade-size: 72px;
+
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* hide native scrollbar everywhere */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* old Edge/IE */
+}
+
+.fade-on-scroll::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+
+/* optional: if you still want mask support */
+.fade-on-scroll[data-fade-top="0"][data-fade-bottom="0"] {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.fade-on-scroll[data-fade-top="1"][data-fade-bottom="0"] {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 var(--fade-size),
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 var(--fade-size),
+    #000 100%
+  );
+}
+
+.fade-on-scroll[data-fade-top="0"][data-fade-bottom="1"] {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 calc(100% - var(--fade-size)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 calc(100% - var(--fade-size)),
+    transparent 100%
+  );
+}
+
+.fade-on-scroll[data-fade-top="1"][data-fade-bottom="1"] {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 var(--fade-size),
+    #000 calc(100% - var(--fade-size)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 var(--fade-size),
+    #000 calc(100% - var(--fade-size)),
+    transparent 100%
+  );
 }
