@@ -7,7 +7,7 @@ const CARD_THEME = {
     chipBg: "#25DB171F",
     title: "#25DB17",
     text: "#25DB17CC",
-    muted: "#25DB17CC",
+    muted: "rgba(37, 219, 23, 0.8)",
     divider: "#25DB1714",
     dot: "#61DE0D",
     shadow: "0 0 40px rgba(37, 219, 23, 0.05)",
@@ -59,7 +59,7 @@ const RuleCard = ({ data }: { data: RuleCardData }) => {
 
   return (
     <div
-      className="rounded-[16px] border p-3"
+      className="rounded-[16px] border p-4"
       style={{
         background: theme.bg,
         borderColor: theme.border,
@@ -71,7 +71,7 @@ const RuleCard = ({ data }: { data: RuleCardData }) => {
         style={{ background: theme.chipBg }}
       >
         <span
-          className="text-[clamp(11px,0.85vw,12px)] uppercase leading-none"
+          className="text-[13px] uppercase leading-none"
           style={{
             color: theme.title,
             fontWeight: 500,
@@ -99,7 +99,7 @@ const RuleCard = ({ data }: { data: RuleCardData }) => {
 
                   <div className="min-w-0 flex-1">
                     <p
-                      className="text-[clamp(11px,0.85vw,12px)]"
+                      className="text-[16px]"
                       style={{
                         color: theme.text,
                         fontWeight: 400,
@@ -109,18 +109,18 @@ const RuleCard = ({ data }: { data: RuleCardData }) => {
                     </p>
 
                     <div
-                      className="mt-1 flex flex-wrap items-center gap-2 text-[clamp(11px,0.85vw,12px)]"
+                      className="mt-1 flex flex-wrap items-center gap-2 text-[16px]"
                       style={{
                         color: theme.muted,
                         fontWeight: 200,
                       }}
                     >
                       <span>Applied {point.applied}</span>
-                      <span className="opacity-60">•</span>
+                      <span className="text-[#25DB171F] text-[16px]">•</span>
                       <span>Helpful {point.helpful}</span>
-                      <span className="opacity-60">•</span>
+                      <span className="text-[#25DB171F] text-[16px]">•</span>
                       <span>Rate: {point.rate}</span>
-                      <span className="opacity-60">•</span>
+                      <span className="text-[#25DB171F] text-[16px]">•</span>
                       <span>Since {point.since}</span>
                     </div>
                   </div>
@@ -139,7 +139,7 @@ const RuleCard = ({ data }: { data: RuleCardData }) => {
       ) : (
         <div className="mt-6">
           <p
-            className="max-w-[95%] text-[clamp(11px,0.85vw,12px)]"
+            className="max-w-[95%] text-[16px]"
             style={{
               color: theme.text,
               fontWeight: 400,
@@ -149,10 +149,10 @@ const RuleCard = ({ data }: { data: RuleCardData }) => {
           </p>
 
           <div
-            className="mt-8 grid grid-cols-2 gap-2 text-[clamp(11px,0.85vw,12px)]"
+            className="mt-8 grid grid-cols-2 gap-2 text-[16px]"
             style={{
               color: theme.muted,
-              fontWeight: 400,
+              fontWeight: 200,
             }}
           >
             <span>{`Applied ${data.applied}`}</span>

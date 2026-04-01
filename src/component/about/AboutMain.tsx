@@ -73,10 +73,10 @@ const AboutMain = () => {
 
             <div className="mt-8 grid gap-5 lg:grid-cols-3">
               {experimentCards.map((card) => (
-                <div className="p-4 space-y-4 rounded-[16] bg-[#44374233] border border-[#44374233]">
+                <div key={card.title} className="p-4 space-y-4 rounded-[16] bg-[#44374233] border border-[#44374233]">
                   <div className="space-y-1.5">
                     <h4
-                      className="text-[#F2F3D9] text-[clamp(13px,0.95vw,14px)]"
+                      className="text-[#F2F3D9] text-[15px]"
                       style={{
                         fontWeight: 400,
                       }}
@@ -85,7 +85,7 @@ const AboutMain = () => {
                     </h4>
                   </div>
                   <p
-                    className="text-[clamp(11px,0.85vw,12px)] text-[#F2F3D9CC]"
+                    className="text-[13px] text-[#F2F3D9CC]"
                     style={{
                       fontWeight: 200,
                     }}
@@ -97,7 +97,7 @@ const AboutMain = () => {
             </div>
 
             <p
-              className="mt-8 max-w-[1120px] text-[clamp(13px,0.95vw,14px)] text-[#F2F3D9CC] "
+              className="mt-8 max-w-[1120px] text-[14px] text-[#F2F3D9CC] "
               style={{
                 fontWeight: 200,
               }}
@@ -244,10 +244,10 @@ const AboutMain = () => {
             </p>
 
             <a
-              href="https://www.producthunt.com/"
+              href="http://hunt.draconic.ai/"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-5 inline-flex py-2.5 items-center justify-center rounded-full border border-[#FF6D0029] bg-[#FF6D0033] px-4 text-[clamp(13px,0.95vw,14px)] text-[#FF6D00] shadow-[0_0_8px_#FF6D0066]"
+              className="mt-5 inline-flex py-2.5 items-center justify-center rounded-full border border-[#FF6D0029] bg-[#FF6D0033] px-4 text-[clamp(13px,0.95vw,14px)] text-[#FF6D00] shadow-[0_0_8px_#FF6D0066]  hover:shadow-[0_0_12px_#FF6D0080] transition"
               style={{
                 fontWeight: 500,
               }}

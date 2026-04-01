@@ -1,7 +1,12 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { filterJournalEntries, journalAgents, journalEntries, tradeLogData } from "./journalData";
+import {
+  filterJournalEntries,
+  journalAgents,
+  journalEntries,
+  tradeLogData,
+} from "./journalData";
 import JournalOverviewSection from "./JournalOverviewSection";
 import JournalTradeLogSection from "./JournalTradeLogSection";
 // import {
@@ -22,7 +27,7 @@ const JournalMain = () => {
   const [activeAgent, setActiveAgent] = useState<string>(journalAgents[0].id);
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [selectedEntryId, setSelectedEntryId] = useState<string | null>(
-    journalEntries[0]?.id || null
+    journalEntries[0]?.id || null,
   );
   const [dateRange, setDateRange] = useState<DateRange>({
     from: new Date(2026, 0, 1),
@@ -48,14 +53,18 @@ const JournalMain = () => {
       return;
     }
 
-    const stillExists = filteredEntries.some((item) => item.id === selectedEntryId);
+    const stillExists = filteredEntries.some(
+      (item) => item.id === selectedEntryId,
+    );
     if (!stillExists) {
       setSelectedEntryId(filteredEntries[0].id);
     }
   }, [filteredEntries, selectedEntryId]);
 
   React.useEffect(() => {
-    const firstEntryForAgent = journalEntries.find((item) => item.agentId === activeAgent);
+    const firstEntryForAgent = journalEntries.find(
+      (item) => item.agentId === activeAgent,
+    );
     setSelectedEntryId(firstEntryForAgent?.id || null);
     setActiveFilter("all");
   }, [activeAgent]);
@@ -83,8 +92,8 @@ const JournalMain = () => {
             className="max-w-[620px] text-[14px] leading-[1.6] text-[#F2F3D9CC] md:pt-1 md:text-right"
             style={{ fontWeight: 200 }}
           >
-            Trade recaps, lessons learned, rules evolved. The agent&apos;s thinking,
-            unfiltered.
+            Trade recaps, lessons learned, rules evolved. The agent&apos;s
+            thinking, unfiltered.
           </p>
         </div>
 
@@ -96,12 +105,22 @@ const JournalMain = () => {
               <button
                 key={agent.id}
                 onClick={() => setActiveAgent(agent.id)}
-                style={{ fontWeight: 500 }}
-                className={`rounded-full border px-[clamp(16px,1.5vw,22px)] py-[clamp(10px,0.95vw,14px)] text-[14px] leading-none transition-all duration-200 ${
-                  isActive
-                    ? "border-[#6E0B2833] bg-[#DA596F1F] text-[#DA596F] shadow-[0_0_16px_rgba(110,11,40,0.4)]"
-                    : "border-[#DA596F14] bg-[#DA596F14] text-[#6E0B28]"
-                }`}
+                className={`
+          rounded-full border
+          px-[clamp(16px,1.5vw,22px)]
+          py-[clamp(10px,0.95vw,14px)]
+          text-[14px] 
+          transition-all duration-200 border
+
+          ${
+            isActive
+              ? "border-[rgba(110,11,40,0.2)] bg-[#DA596F1F] text-[#DA596F] shadow-[0_0_16px_rgba(110,11,40,0.4)]"
+              : " bg-[#DA596F14] border-none text-[#6E0B28] "
+          }
+        `}
+                style={{
+                  fontWeight: 500,
+                }}
               >
                 {agent.label}
               </button>

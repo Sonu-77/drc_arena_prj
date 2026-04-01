@@ -402,7 +402,7 @@ const JournalOverviewSection = ({
                     );
                   })
                 ) : (
-                  <div className="rounded-[20px] border border-[rgba(242,174,161,0.12)] bg-[rgba(68,55,66,0.20)] p-4 text-[14px] text-[#B68C89]">
+                  <div className=" text-[14px] text-center text-[#B68C89]">
                     No entries found for the selected filters.
                   </div>
                 )}
@@ -496,7 +496,7 @@ const JournalOverviewSection = ({
               </div>
 
               <div
-                className="mt-5 text-[clamp(11px,0.85vw,12px)] text-[#F2F3D9CC]"
+                className="mt-5 text-[clamp(13px,0.95vw,14px)] text-[#F2F3D9CC]"
                 style={{
                   fontWeight: 200,
                 }}
@@ -521,7 +521,7 @@ const JournalOverviewSection = ({
                             // boxShadow: "0 0 8px rgba(68,55,66,0.40)",
                           }}
                         >
-                          <h3 className="mb-4 text-[10px] text-[#F2F3D999]">
+                          <h3 className="mb-4 text-[14px] text-[#F2F3D999]">
                             {card.title}
                           </h3>
 
@@ -529,7 +529,7 @@ const JournalOverviewSection = ({
                             {card.content.map((point, index) => (
                               <li
                                 key={index}
-                                className="flex items-start gap-3 text-[10px] text-[#F2F3D9CC]"
+                                className="flex items-start gap-3 text-[14px] text-[#F2F3D9CC]"
                               >
                                 <span className="mt-[4px] h-2 w-2 shrink-0 rounded-full bg-[#F2F3D999] shadow-[0_0_10px_#F2F3D966]" />
                                 <span
@@ -553,7 +553,7 @@ const JournalOverviewSection = ({
                           }}
                         >
                           <h3
-                            className="mb-3 text-[10px] text-[#F2F3D999]"
+                            className="mb-3 text-[14px] text-[#F2F3D999]"
                             style={{
                               fontWeight: 400,
                             }}
@@ -562,7 +562,7 @@ const JournalOverviewSection = ({
                           </h3>
 
                           <p
-                            className="text-[10px] text-[#F2F3D9CC]"
+                            className="text-[14px] text-[#F2F3D9CC]"
                             style={{
                               fontWeight: 200,
                             }}

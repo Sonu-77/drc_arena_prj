@@ -7,33 +7,31 @@ import { tradeTabs } from "./tradeData";
 
 const MainTradesFile = () => {
   const [activeAgent, setActiveAgent] = useState<string>(tradeTabs[0].key);
-  const TRADER_FRAME_HEIGHT = 738;
 
   return (
     <section
       className="
-    w-full
-    overflow-hidden
-    px-[clamp(20px,2.2vw,32px)]
-     py-[clamp(20px,2.2vw,32px)]
-  "
-      style={{ minHeight: "100dvh" }}
+        w-full
+        overflow-hidden
+        px-[clamp(20px,2.2vw,32px)]
+        pt-[clamp(20px,2.2vw,32px)]
+        pb-[clamp(12px,1.4vw,18px)]
+      "
+      style={{ height: "100dvh" }}
     >
       <div
         className="
-    mx-auto
-    grid
-    min-h-0
-    w-full
-    max-w-[1360px]
-    grid-cols-[260px_minmax(0,1fr)]
-    justify-center
-    gap-[clamp(20px,1.8vw,28px)]
-    items-start
-  "
-        style={{
-          minHeight: "calc(100dvh - clamp(32px, 3.6vw, 48px))",
-        }}
+          mx-auto
+          grid
+          h-full
+          min-h-0
+          w-full
+          max-w-[1360px]
+          grid-cols-[260px_minmax(0,1fr)]
+          items-start
+          justify-center
+          gap-[clamp(20px,1.8vw,28px)]
+        "
       >
         <TradeLeftPanel activeAgent={activeAgent} />
 

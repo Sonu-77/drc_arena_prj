@@ -117,7 +117,7 @@ export type AgentTradeData = {
   id: string;
   title: string;
   description: string;
-  totalPnL: number;
+  totalPnL: number|string;
   marketStatus: {
     label: string;
     time: string;
@@ -146,8 +146,8 @@ export const tradeAgentsData: Record<string, AgentTradeData> = {
       time: "09:15 AM",
     },
     summary: {
-      trades: 3,
-      wins: 2,
+      trades: 2,
+      wins: 1,
       losses: 1,
     },
     trades: [
@@ -165,13 +165,7 @@ export const tradeAgentsData: Record<string, AgentTradeData> = {
         avgPrice: "₹2,660",
         pnl: -2660,
       },
-      {
-        side: "B",
-        symbol: "INDIAVIX23JUN 23500PE",
-        qty: 2,
-        avgPrice: "₹2,660",
-        pnl: 2560,
-      },
+      
     ],
     watchlist: [
       {
@@ -194,6 +188,15 @@ export const tradeAgentsData: Record<string, AgentTradeData> = {
       },
     ],
     sessionFlow: [
+      {
+        time: "11:15",
+        label: "Closed -₹3,051",
+      },
+      {
+        time: "11:45",
+        label: "Circuit Breaker L1",
+        active: true,
+      },
       {
         time: "11:15",
         label: "Closed -₹3,051",
@@ -581,67 +584,7 @@ export const tradeAgentsData: Record<string, AgentTradeData> = {
     title: "Agent Three",
     description:
       "Multi-signal analyst. Tracks short-term structure and tactical reversals.",
-    totalPnL: 420,
-    marketStatus: {
-      label: "MARKET OPEN",
-      time: "09:15 AM",
-    },
-    summary: {
-      trades: 4,
-      wins: 3,
-      losses: 1,
-    },
-    trades: [],
-    watchlist: [],
-    sessionFlow: [],
-    conversation: [
-      {
-        id: "a3-a-1",
-        role: "assistant",
-        time: "09:16",
-        text: "Agent Three ready. Multi-signal flow initialized.",
-        statusLabel: "READY",
-        statusSubLabel: "ONLINE",
-      },
-    ],
-  },
-
-  agentFour: {
-    id: "agentFour",
-    title: "Agent Four",
-    description:
-      "Volatility-focused agent. Reads gamma, flow, and intraday positioning.",
-    totalPnL: -75,
-    marketStatus: {
-      label: "MARKET OPEN",
-      time: "09:15 AM",
-    },
-    summary: {
-      trades: 2,
-      wins: 1,
-      losses: 1,
-    },
-    trades: [],
-    watchlist: [],
-    sessionFlow: [],
-    conversation: [
-      {
-        id: "a4-a-1",
-        role: "assistant",
-        time: "09:16",
-        text: "Volatility engine synced. Awaiting prompt.",
-        statusLabel: "READY",
-        statusSubLabel: "ONLINE",
-      },
-    ],
-  },
-
-  agentFive: {
-    id: "agentFive",
-    title: "Agent Five",
-    description:
-      "Execution-focused assistant. Filters noise and sharpens entry timing.",
-    totalPnL: 0,
+    totalPnL: "-",
     marketStatus: {
       label: "MARKET OPEN",
       time: "09:15 AM",
@@ -655,14 +598,53 @@ export const tradeAgentsData: Record<string, AgentTradeData> = {
     watchlist: [],
     sessionFlow: [],
     conversation: [
-      {
-        id: "a5-a-1",
-        role: "assistant",
-        time: "09:16",
-        text: "Execution agent active. No live setups yet.",
-        statusLabel: "READY",
-        statusSubLabel: "STANDBY",
-      },
+      
+    ],
+  },
+
+  agentFour: {
+    id: "agentFour",
+    title: "Agent Four",
+    description:
+      "Volatility-focused agent. Reads gamma, flow, and intraday positioning.",
+    totalPnL: "-",
+    marketStatus: {
+      label: "MARKET OPEN",
+      time: "09:15 AM",
+    },
+    summary: {
+      trades: 0,
+      wins: 0,
+      losses: 0,
+    },
+    trades: [],
+    watchlist: [],
+    sessionFlow: [],
+    conversation: [
+      
+    ],
+  },
+
+  agentFive: {
+    id: "agentFive",
+    title: "Agent Five",
+    description:
+      "Execution-focused assistant. Filters noise and sharpens entry timing.",
+    totalPnL: "-",
+    marketStatus: {
+      label: "MARKET OPEN",
+      time: "09:15 AM",
+    },
+    summary: {
+      trades: 0,
+      wins: 0,
+      losses: 0,
+    },
+    trades: [],
+    watchlist: [],
+    sessionFlow: [],
+    conversation: [
+      
     ],
   },
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 const monthNames = [
   "January",
@@ -35,6 +35,8 @@ const JournalDateFilterPopover = ({
   setDateRange,
   onClose,
 }: JournalDateFilterPopoverProps) => {
+  const calendarRef = useRef<HTMLDivElement | null>(null);
+const inputRowRef = useRef<HTMLDivElement | null>(null);
   const [draftFrom, setDraftFrom] = useState(dateRange.from);
   const [draftTo, setDraftTo] = useState(dateRange.to);
   const [activeInput, setActiveInput] = useState<"from" | "to" | null>(null);
@@ -65,6 +67,30 @@ const JournalDateFilterPopover = ({
     return () => document.removeEventListener("keydown", handleEscape);
   }, [activeInput, onClose]);
 
+  useEffect(() => {
+  const handleClickOutsideCalendar = (event: MouseEvent) => {
+    if (!activeInput) return;
+
+    const target = event.target as Node;
+
+    const clickedInsideCalendar =
+      calendarRef.current && calendarRef.current.contains(target);
+
+    const clickedInsideInput =
+      inputRowRef.current && inputRowRef.current.contains(target);
+
+    if (!clickedInsideCalendar && !clickedInsideInput) {
+      setActiveInput(null);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutsideCalendar);
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutsideCalendar);
+  };
+}, [activeInput]);
+
   const calendarDays = useMemo(
     () => buildCalendarDays(visibleMonth),
     [visibleMonth],
@@ -83,19 +109,32 @@ const JournalDateFilterPopover = ({
   };
 
   const handlePickDate = (date: Date) => {
+    let nextFrom = draftFrom;
+    let nextTo = draftTo;
+
     if (activeInput === "from") {
-      setDraftFrom(date);
+      nextFrom = date;
       if (date > draftTo) {
-        setDraftTo(date);
+        nextTo = date;
       }
     }
 
     if (activeInput === "to") {
-      setDraftTo(date);
+      nextTo = date;
       if (date < draftFrom) {
-        setDraftFrom(date);
+        nextFrom = date;
       }
     }
+
+    setDraftFrom(nextFrom);
+    setDraftTo(nextTo);
+
+    setDateRange({
+      from: nextFrom,
+      to: nextTo,
+    });
+
+    setActiveInput(null);
   };
 
   const handleApply = () => {
@@ -106,6 +145,123 @@ const JournalDateFilterPopover = ({
     setActiveInput(null);
     onClose();
   };
+
+  const handleCancel = () => {
+    setDraftFrom(dateRange.from);
+    setDraftTo(dateRange.to);
+    setActiveInput(null);
+    onClose();
+  };
+
+  const calendarNode = activeInput ? (
+    <div ref={calendarRef} className="absolute left-0 top-[calc(100%+8px)] z-[140]">
+      <div
+        className="w-[200px] rounded-[7.55px] border"
+        style={{
+          background: "#3D2826",
+          border: "0.47px solid rgba(242,174,161,0.16)",
+          boxShadow:
+            "0 0 8px rgba(242,174,161,0.14), 0 10px 24px rgba(0,0,0,0.22)",
+          padding: "9.43px",
+        }}
+      >
+        <div className="flex flex-col gap-[9.43px]">
+          <div className="flex items-center justify-between">
+            <button
+              type="button"
+              onClick={() =>
+                setVisibleMonth(
+                  new Date(
+                    visibleMonth.getFullYear(),
+                    visibleMonth.getMonth() - 1,
+                    1,
+                  ),
+                )
+              }
+              className="flex h-7 w-7 items-center justify-center rounded-[6px] text-[12px] leading-none text-[#F4E6DA]"
+              aria-label="Previous month"
+            >
+              ‹
+            </button>
+
+            <div className="text-[10px] text-[#F2F3D9]">
+              {monthNames[visibleMonth.getMonth()]} {visibleMonth.getFullYear()}
+            </div>
+
+            <button
+              type="button"
+              onClick={() =>
+                setVisibleMonth(
+                  new Date(
+                    visibleMonth.getFullYear(),
+                    visibleMonth.getMonth() + 1,
+                    1,
+                  ),
+                )
+              }
+              className="flex h-7 w-7 items-center justify-center rounded-[6px] text-[12px] leading-none text-[#F4E6DA]"
+              aria-label="Next month"
+            >
+              ›
+            </button>
+          </div>
+
+          <div className="grid grid-cols-7 gap-[6px]">
+            {weekdayNames.map((day) => (
+              <div
+                key={day}
+                className="flex items-center justify-center rounded-[4px] p-1 text-[10px] text-[#F2AEA13D]"
+                style={{ background: "#F2AEA114", fontWeight: 400 }}
+              >
+                {day}
+              </div>
+            ))}
+
+            {calendarDays.map((day, index) => {
+              const isSelected =
+                (draftFrom && isSameDate(day.date, draftFrom)) ||
+                (draftTo && isSameDate(day.date, draftTo));
+
+              const isInRange =
+                draftFrom &&
+                draftTo &&
+                day.date >= stripTime(draftFrom) &&
+                day.date <= stripTime(draftTo);
+
+              return (
+                <button
+                  key={`${day.date.toISOString()}-${index}`}
+                  type="button"
+                  onClick={() => handlePickDate(day.date)}
+                  className="flex items-center justify-center rounded-[4px] p-1 text-[10px] transition"
+                  style={{
+                    fontWeight: 400,
+                    background: day.isCurrentMonth
+                      ? isSelected
+                        ? "#DE5B79"
+                        : isInRange
+                          ? "rgba(216,90,119,0.28)"
+                          : "rgba(255,255,255,0.08)"
+                      : "rgba(255,255,255,0.03)",
+                    color: day.isCurrentMonth
+                      ? isSelected
+                        ? "#FFFFFF"
+                        : "#F5E6D8"
+                      : "#745B5A",
+                    border: isSameDate(day.date, draftTo)
+                      ? "1px solid #DA596F"
+                      : "1px solid transparent",
+                  }}
+                >
+                  {day.date.getDate()}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : null;
 
   return (
     <div className="absolute right-0 top-10 z-[120]">
@@ -121,7 +277,7 @@ const JournalDateFilterPopover = ({
           }}
         >
           <div className="flex flex-col gap-[12px]">
-            <div className="flex items-center justify-between ">
+            <div className="flex items-center justify-between">
               <h3
                 className="text-[clamp(13px,0.95vw,14px)] text-[#F2AEA1CC]"
                 style={{ fontWeight: 400 }}
@@ -140,206 +296,106 @@ const JournalDateFilterPopover = ({
             </div>
 
             <DateInputRow
-              label="From"
-              value={displayValue(draftFrom)}
-              isActive={activeInput === "from"}
-              onClick={() => openCalendarFor("from")}
-            />
+  ref={activeInput === "from" ? inputRowRef : null}
+  label="From"
+  value={displayValue(draftFrom)}
+  isActive={activeInput === "from"}
+  onClick={() => openCalendarFor("from")}
+>
+  {activeInput === "from" ? calendarNode : null}
+</DateInputRow>
 
-            <DateInputRow
-              label="To"
-              value={displayValue(draftTo)}
-              isActive={activeInput === "to"}
-              onClick={() => openCalendarFor("to")}
-            />
-          </div>
-        </div>
-        <div className="relative">
+<DateInputRow
+  ref={activeInput === "to" ? inputRowRef : null}
+  label="To"
+  value={displayValue(draftTo)}
+  isActive={activeInput === "to"}
+  onClick={() => openCalendarFor("to")}
+>
+  {activeInput === "to" ? calendarNode : null}
+</DateInputRow>
 
-        {activeInput && (
-          <div className="absolute -top-2 left-2">
-            <div
-              className="w-[200px] rounded-[7.55px] border"
-              style={{
-                background: "#3D2826",
-                border: "0.47px solid rgba(242,174,161,0.16)",
-                boxShadow:
-                  "0 0 8px rgba(242,174,161,0.14), 0 10px 24px rgba(0,0,0,0.22)",
-                padding: "9.43px",
-              }}
-            >
-              <div className="flex flex-col gap-[9.43px]">
-                <div className="flex items-center justify-between">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setVisibleMonth(
-                        new Date(
-                          visibleMonth.getFullYear(),
-                          visibleMonth.getMonth() - 1,
-                          1,
-                        ),
-                      )
-                    }
-                    className="flex h-7 w-7 items-center justify-center rounded-[6px] text-[12px] leading-none text-[#F4E6DA]"
-                    aria-label="Previous month"
-                  >
-                    ‹
-                  </button>
+            <div className="mt-3 flex items-center gap-[9px]">
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="flex-1 rounded-[4px] px-2 py-1 text-[10px]"
+                style={{
+                  background: "#F2AEA114",
+                  color: "#F2F3D999",
+                }}
+              >
+                Cancel
+              </button>
 
-                  <div className="text-[10px] text-[#F2F3D9]">
-                    {monthNames[visibleMonth.getMonth()]}{" "}
-                    {visibleMonth.getFullYear()}
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setVisibleMonth(
-                        new Date(
-                          visibleMonth.getFullYear(),
-                          visibleMonth.getMonth() + 1,
-                          1,
-                        ),
-                      )
-                    }
-                    className="flex h-7 w-7 items-center justify-center rounded-[6px] text-[12px] leading-none text-[#F4E6DA]"
-                    aria-label="Next month"
-                  >
-                    ›
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-7 gap-[6px]">
-                  {weekdayNames.map((day) => (
-                    <div
-                      key={day}
-                      className="flex  items-center justify-center p-1 rounded-[4px] text-[10px] text-[#F2AEA13D]"
-                      style={{ background: "#F2AEA114",fontWeight:400 }}
-                    >
-                      {day}
-                    </div>
-                  ))}
-
-                  {calendarDays.map((day, index) => {
-                    const isSelected =
-                      (draftFrom && isSameDate(day.date, draftFrom)) ||
-                      (draftTo && isSameDate(day.date, draftTo));
-
-                    const isInRange =
-                      draftFrom &&
-                      draftTo &&
-                      day.date >= stripTime(draftFrom) &&
-                      day.date <= stripTime(draftTo);
-
-                    return (
-                      <button
-                        key={`${day.date.toISOString()}-${index}`}
-                        type="button"
-                        onClick={() => handlePickDate(day.date)}
-                        className="flex p-1 items-center justify-center rounded-[4px] text-[10px] transition"
-                        style={{
-                          fontWeight:400 ,
-                          background: day.isCurrentMonth
-                            ? isSelected
-                              ? "#DE5B79"
-                              : isInRange
-                                ? "rgba(216,90,119,0.28)"
-                                : "rgba(255,255,255,0.08)"
-                            : "rgba(255,255,255,0.03)",
-                          color: day.isCurrentMonth
-                            ? isSelected
-                              ? "#FFFFFF"
-                              : "#F5E6D8"
-                            : "#745B5A",
-                          border: isSameDate(day.date, draftTo)
-                            ? "1px solid #DA596F"
-                            : "1px solid transparent",
-                        }}
-                      >
-                        {day.date.getDate()}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <div className="flex items-center gap-[9px]">
-                  <button
-                    type="button"
-                    onClick={() => setActiveInput(null)}
-                    className="flex-1 rounded-[4px] px-2 py-1 text-[10px]"
-                    style={{
-                      background: "#F2AEA114",
-                      color: "#F2F3D999",
-                    }}
-                  >
-                    Cancel
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleApply}
-                    className="flex-1 rounded-[4px] px-2 py-1 text-[10px]"
-                    style={{
-                      background:
-                        "#DA596F",
-                    }}
-                  >
-                    Choose Date
-                  </button>
-                </div>
-              </div>
+              <button
+                type="button"
+                onClick={handleApply}
+                className="flex-1 rounded-[4px] px-2 py-1 text-[10px]"
+                style={{
+                  background: "#DA596F",
+                }}
+              >
+                Choose Date
+              </button>
             </div>
           </div>
-        )}
         </div>
-
       </div>
     </div>
   );
 };
 
-const DateInputRow = ({
-  label,
-  value,
-  isActive,
-  onClick,
-}: {
-  label: string;
-  value: string;
-  isActive: boolean;
-  onClick: () => void;
-}) => {
+const DateInputRow = React.forwardRef<
+  HTMLDivElement,
+  {
+    label: string;
+    value: string;
+    isActive: boolean;
+    onClick: () => void;
+    children?: React.ReactNode;
+  }
+>(({ label, value, isActive, onClick, children }, ref) => {
   return (
-    <div className="grid grid-cols-[54px_1fr] items-center">
-      <span
-        className="text-[clamp(11px,0.85vw,12px)] text-[#F2AEA199]"
-        style={{ fontWeight: 200 }}
-      >
-        {label}
-      </span>
-
-      <button
-        type="button"
-        onClick={onClick}
-        className="flex py-2.5 w-[140px] shrink-0 items-center justify-between overflow-hidden rounded-[5.25px] px-[10.49px] text-left"
-        style={{
-          background: isActive ? "rgba(242,174,161,0.08)" : "transparent",
-          border: "1.31px solid rgba(242,174,161,0.12)",
-          boxShadow: isActive ? "0 0 0 1px rgba(242,174,161,0.08)" : "none",
-        }}
-      >
-        <span className="block max-w-[104px] truncate text-[10px] text-[#F2F3D9]">
-          {value}
+    <div ref={ref} className="relative">
+      <div className="grid grid-cols-[54px_1fr] items-center">
+        <span
+          className="text-[clamp(11px,0.85vw,12px)] text-[#F2AEA199]"
+          style={{ fontWeight: 200 }}
+        >
+          {label}
         </span>
 
-        <span className=" flex  shrink-0 items-center justify-center text-[10px] leading-none text-[#F2F3D9]">
-          {isActive ? "⌃" : "⌄"}
-        </span>
-      </button>
+        <button
+          type="button"
+          onClick={onClick}
+          className="flex w-[140px] shrink-0 items-center justify-between overflow-hidden rounded-[5.25px] px-[10.49px] py-2.5 text-left"
+          style={{
+            background: isActive ? "rgba(242,174,161,0.08)" : "transparent",
+            border: "1.31px solid rgba(242,174,161,0.12)",
+            boxShadow: isActive ? "0 0 0 1px rgba(242,174,161,0.08)" : "none",
+          }}
+        >
+          <span className="block max-w-[104px] truncate text-[10px] text-[#F2F3D9]">
+            {value}
+          </span>
+
+          <span
+            className={`flex shrink-0 items-center justify-center text-[10px] leading-none text-[#F2F3D9] transition-transform duration-300 ${
+              isActive ? "rotate-0" : "rotate-180"
+            }`}
+          >
+            ⌃
+          </span>
+        </button>
+      </div>
+
+      {children}
     </div>
   );
-};
+});
+
+DateInputRow.displayName = "DateInputRow";
 
 function buildCalendarDays(visibleMonth: Date) {
   const year = visibleMonth.getFullYear();

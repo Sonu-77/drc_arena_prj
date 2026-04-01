@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { FeedItem, tradeAgentsData, tradeTabs } from "./tradeData";
-
+import { AnimatePresence, motion } from "framer-motion";
 
 type TradeRightPanelProps = {
   activeAgent: string;
@@ -89,8 +89,8 @@ const TradeRightPanel = ({
     <section
       className="w-full max-w-[1060px] justify-self-center overflow-hidden"
       style={{
-        height: `min(clamp(620px, 74dvh, ${TRADER_FRAME_HEIGHT}px), calc(100dvh - clamp(56px, 7vh, 88px)))`,
-        maxHeight: `min(${TRADER_FRAME_HEIGHT}px, calc(100dvh - clamp(56px, 7vh, 88px)))`,
+        height: `min(clamp(762px, 74dvh, ${TRADER_FRAME_HEIGHT}px), calc(100dvh - clamp(56px, 7vh, 10px)))`,
+        maxHeight: `min(${TRADER_FRAME_HEIGHT}px, calc(100dvh - clamp(56px, 7vh, 10px)))`,
       }}
     >
       <div className="flex h-full min-h-0 min-w-0 w-full flex-col overflow-hidden">
@@ -160,51 +160,70 @@ const TradeRightPanel = ({
                       >
                         <div className="px-[clamp(14px,1.6vw,28px)]">
                           <div className="flex min-h-full flex-col gap-[clamp(14px,1.4vw,24px)] pb-[72px] pr-[18px]">
-                            <div className="px-7">
-                              <div
-                                className="flex h-[clamp(42px,4vw,50px)] items-center justify-center rounded-[8px] px-4 text-center uppercase"
-                                style={{
-                                  background: "#25DB171F",
-                                  color: "#25DB17",
-                                  fontWeight: 500,
-                                  fontSize: "clamp(10px,1vw,12px)",
-                                }}
-                              >
-                                {data.marketStatus.label}
-                                <span className="mx-3 inline-block h-[4px] w-[4px] rounded-full bg-[#25DB1733]" />
-                                <span
-                                  className="text-[#25DB1766]"
+                            {data.conversation.length !== 0 && (
+                              <div className="px-7">
+                                <div
+                                  className="flex h-[clamp(42px,4vw,50px)] items-center justify-center rounded-[8px] px-4 text-center uppercase"
+                                  style={{
+                                    background: "#25DB171F",
+                                    color: "#25DB17",
+                                    fontWeight: 500,
+                                    fontSize: "clamp(10px,1vw,12px)",
+                                  }}
+                                >
+                                  {data.marketStatus.label}
+                                  <span className="mx-3 inline-block h-[4px] w-[4px] rounded-full bg-[#25DB1733]" />
+                                  <span
+                                    className="text-[#25DB1766]"
+                                    style={{ fontWeight: 400 }}
+                                  >
+                                    {data.marketStatus.time}
+                                  </span>
+                                </div>
+                              </div>
+                            )}
+
+                            {data.conversation.length === 0 ? (
+                              <div className="flex h-full min-h-[500px] items-center justify-center">
+                                <p
+                                  className="max-w-[820px] text-center text-[clamp(10px,0.8vw,12px)] text-[#F2F3D966]"
                                   style={{ fontWeight: 400 }}
                                 >
-                                  {data.marketStatus.time}
-                                </span>
+                                  The agent hasn't entered its session yet. Once
+                                  it goes live, you'll see its moves, reasoning,
+                                  and market commentary here in real time.
+                                </p>
                               </div>
-                            </div>
+                            ) : (
+                              <>
+                                {data.conversation.map((item) => (
+                                  <FeedRow key={item.id} item={item} />
+                                ))}
+                              </>
+                            )}
 
-                            {data.conversation.map((item) => (
-                              <FeedRow key={item.id} item={item} />
-                            ))}
-
-                            <div className="px-7">
-                              <div
-                                className="flex h-[clamp(42px,4vw,50px)] items-center justify-center rounded-[8px] px-4 text-center uppercase"
-                                style={{
-                                  background: "#C5181B1F",
-                                  color: "#C5181B",
-                                  fontWeight: 500,
-                                  fontSize: "clamp(10px,1vw,12px)",
-                                }}
-                              >
-                                MARKET Closed
-                                <span className="mx-3 inline-block h-[4px] w-[4px] rounded-full bg-[#C5181B33]" />
-                                <span
-                                  className="text-[#C5181B66]"
-                                  style={{ fontWeight: 400 }}
+                            {data.conversation.length !== 0 && (
+                              <div className="px-7">
+                                <div
+                                  className="flex h-[clamp(42px,4vw,50px)] items-center justify-center rounded-[8px] px-4 text-center uppercase"
+                                  style={{
+                                    background: "#C5181B1F",
+                                    color: "#C5181B",
+                                    fontWeight: 500,
+                                    fontSize: "clamp(10px,1vw,12px)",
+                                  }}
                                 >
-                                  03:30 pm
-                                </span>
+                                  MARKET Closed
+                                  <span className="mx-3 inline-block h-[4px] w-[4px] rounded-full bg-[#C5181B33]" />
+                                  <span
+                                    className="text-[#C5181B66]"
+                                    style={{ fontWeight: 400 }}
+                                  >
+                                    03:30 pm
+                                  </span>
+                                </div>
                               </div>
-                            </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -212,14 +231,14 @@ const TradeRightPanel = ({
                       {showScrollbar && (
                         <>
                           <div
-                            className="pointer-events-none absolute right-0 top-0 z-[4] h-full w-[6px] rounded-full"
+                            className="pointer-events-none absolute right-3 top-0 z-[4] h-full w-[6px] rounded-full"
                             style={{
                               background: "rgba(68, 55, 66, 0.2)",
                               opacity: 0.55,
                             }}
                           />
                           <div
-                            className="pointer-events-none absolute right-0 z-[5] w-[6px] rounded-full"
+                            className="pointer-events-none absolute right-3 z-[5] w-[6px] rounded-full"
                             style={{
                               top: `${thumbTop}px`,
                               height: `${thumbHeight}px`,
@@ -336,14 +355,14 @@ function UserQueryCard({ item }: { item: FeedItem }) {
             rounded-br-[8px]
             p-[clamp(10px,0.7vw,12px)]
 
-            text-[clamp(10px,0.7vw,12px)]
+            text-[13px]
             text-[#F2AEA1]
             text-right
           "
           style={{
             background: "#6E0B2866",
 
-            fontWeight: 400,
+            fontWeight: 300,
           }}
         >
           {item.queryText}
@@ -401,7 +420,7 @@ function AgentThoughtCard({ item }: { item: FeedItem }) {
         </div>
 
         <p
-          className="text-[clamp(10px,0.7vw,12px)] text-[#DA596F99]"
+          className="text-[13px] text-[#DA596F99]"
           style={{ fontWeight: 400 }}
         >
           {item.text}
@@ -456,26 +475,35 @@ function AgentResponseCard({ item }: { item: FeedItem }) {
           }}
         >
           <div className="space-y-3">
-            {/* Top preview text */}
             <p
-              className="text-[clamp(10px,0.7vw,12px)] text-[#D9B4A5]"
+              className="text-[13px] text-[#D9B4A5]"
               style={{ fontWeight: 300 }}
             >
               {previewText}
             </p>
 
-            {/* Expanded full section */}
-            {shouldShowExpand && expanded && (
-              <div className="space-y-3">
-                <div className="h-px w-full bg-[#FF6D0014]" />
-                <p
-                  className="text-[clamp(10px,0.7vw,12px)] text-[#D9B4A599]"
-                  style={{ fontWeight: 300 }}
+            <AnimatePresence initial={false}>
+              {shouldShowExpand && expanded && (
+                <motion.div
+                  key="expanded-content"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="overflow-hidden"
                 >
-                  {detailText}
-                </p>
-              </div>
-            )}
+                  <div className="space-y-3 pt-1">
+                    <div className="h-px w-full bg-[#FF6D0014]" />
+                    <p
+                      className="text-[13px] text-[#D9B4A599]"
+                      style={{ fontWeight: 300 }}
+                    >
+                      {detailText}
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {(shouldShowExpand || item.ctaLabel) && (
               <div className="flex flex-wrap items-center justify-between gap-4 pt-1">
@@ -490,7 +518,7 @@ function AgentResponseCard({ item }: { item: FeedItem }) {
                       {expanded ? "Close" : "Show full response"}
                     </span>
                     <span
-                      className={`transition-transform duration-200 ${
+                      className={`transition-transform duration-300 ${
                         expanded ? "rotate-180" : ""
                       }`}
                     >
@@ -719,7 +747,7 @@ function TradePlanCard({ item }: { item: FeedItem }) {
         </div>
 
         {item.reason && (
-          <p className="mt-5 border-t border-[#FFFFFF12] pt-4 text-[12px] leading-[1.45] text-[#8C5560]">
+          <p className="mt-5 border-t border-[#FFFFFF12] pt-4 text-[13px] leading-[1.45] text-[#8C5560]">
             “{item.reason}”
           </p>
         )}
@@ -880,7 +908,7 @@ function TradeSkippedCard({ item }: { item: FeedItem }) {
 
         {item.text && (
           <p
-            className="mt-4 text-[clamp(10px,0.7vw,12px)]  text-[#F2AEA1]"
+            className="mt-4 text-[13px]  text-[#F2AEA1]"
             style={{ fontWeight: 400 }}
           >
             {item.text}
@@ -888,7 +916,7 @@ function TradeSkippedCard({ item }: { item: FeedItem }) {
         )}
 
         {item.reason && (
-          <p className=" mt-2 border-t border-[#DA596F1F] pt-2 text-[10px] text-[#DA596F66]">
+          <p className=" mt-2 border-t border-[#DA596F1F] pt-2 text-[12px] text-[#DA596F66]">
             {item.reason}
           </p>
         )}

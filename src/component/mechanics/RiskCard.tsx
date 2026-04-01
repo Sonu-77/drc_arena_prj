@@ -25,7 +25,7 @@ const RiskManagementSection = ({ data }: { data: RiskManagementData }) => {
       </h2>
 
       <div className="mt-8 border-b border-[#44374266] pb-8">
-        <div className="grid gap-8 xl:grid-cols-[1fr_1.45fr_1fr]">
+        <div className="grid gap-8 xl:grid-cols-[1fr_1.7fr_1fr]">
           {/* COLUMN 1 */}
           <div className="xl:pr-8">
             <h3
@@ -35,17 +35,17 @@ const RiskManagementSection = ({ data }: { data: RiskManagementData }) => {
               CAPITAL & POSITION SIZING
             </h3>
 
-            <div className="mt-8 grid grid-cols-2 gap-x-10 gap-y-8">
+            <div className="mt-8 grid grid-cols-2  gap-x-2 gap-y-8">
               {data.capitalAndSizing.map((item) => (
                 <div key={item.label}>
                   <p
-                    className="text-[10px] text-[#F2F3D999]"
+                    className="text-[14px] text-[#F2F3D999]"
                     style={{ fontWeight: 400 }}
                   >
                     {item.label}
                   </p>
                   <p
-                    className="mt-2 text-[clamp(11px,0.85vw,12px)] text-[#F2F3D9CC]"
+                    className="mt-2 text-[16px] text-[#F2F3D9CC]"
                     style={{ fontWeight: 400 }}
                   >
                     {item.value}
@@ -71,7 +71,7 @@ const RiskManagementSection = ({ data }: { data: RiskManagementData }) => {
                   className="flex flex-wrap items-center gap-2"
                 >
                   <span
-                    className="rounded-[4px] bg-[#44374266] px-2 py-1 text-[10px] uppercase leading-none text-[#F2F3D9]"
+                    className="rounded-[4px] bg-[#44374266] px-2 py-1 text-[14px] uppercase leading-none text-[#F2F3D9]"
                     style={{ fontWeight: 200 }}
                   >
                     {item.level}
@@ -80,7 +80,7 @@ const RiskManagementSection = ({ data }: { data: RiskManagementData }) => {
                   <span className="text-[#F2F3D91F]">•</span>
 
                   <span
-                    className="text-[clamp(11px,0.85vw,12px)] text-[#C5181BCC]"
+                    className="text-[16px] text-[#C5181BCC]"
                     style={{ fontWeight: 200 }}
                   >
                     {item.value}
@@ -89,7 +89,7 @@ const RiskManagementSection = ({ data }: { data: RiskManagementData }) => {
                   <span className="text-[#F2F3D91F]">•</span>
 
                   <span
-                    className="text-[clamp(11px,0.85vw,12px)] text-[#F2F3D9CC]"
+                    className="text-[16px] text-[#F2F3D9CC]"
                     style={{ fontWeight: 400 }}
                   >
                     {item.desc}
@@ -113,7 +113,7 @@ const RiskManagementSection = ({ data }: { data: RiskManagementData }) => {
                 <li key={index} className="flex items-start gap-4">
                   <span className="mt-[8px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#F2F3D999] shadow-[0_0_10px_#F2F3D966]" />
                   <span
-                    className="text-[clamp(11px,0.85vw,12px)] text-[#F2F3D9CC]"
+                    className="text-[16px] text-[#F2F3D9CC]"
                     style={{ fontWeight: 400 }}
                   >
                     {rule}

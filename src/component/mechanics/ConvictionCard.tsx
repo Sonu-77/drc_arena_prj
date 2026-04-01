@@ -3,7 +3,7 @@ const ConvictionCard = ({ data }: any) => {
     <div className="p-4 space-y-4 rounded-[16] bg-[#44374233] border border-[#44374233]">
       <div className="space-y-1.5">
         <h4
-          className="text-[#F2F3D9] text-[clamp(13px,0.95vw,14px)]"
+          className="text-[#F2F3D9] text-[16px]"
           style={{
             fontWeight: 400,
           }}
@@ -11,7 +11,7 @@ const ConvictionCard = ({ data }: any) => {
           {data.title}
         </h4>
         <p
-          className="text-[clamp(11px,0.85vw,12px)] text-[#F2F3D9CC]"
+          className="text-[16px] text-[#F2F3D9CC]"
           style={{
             fontWeight: 400,
           }}
@@ -20,7 +20,7 @@ const ConvictionCard = ({ data }: any) => {
         </p>
       </div>
       <p
-        className="text-[clamp(11px,0.85vw,12px)] text-[#F2F3D9CC]"
+        className="text-[16px] text-[#F2F3D9CC]"
         style={{
           fontWeight: 200,
         }}

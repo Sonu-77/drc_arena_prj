@@ -27,7 +27,7 @@ const MechanicsMain = () => {
               Mechanics
             </h1>
             <p
-              className="text-[#F2F3D9CC] text-[clamp(13px,0.95vw,14px)] max-w-[800px]"
+              className="text-[#F2F3D9CC] text-[16px] max-w-[800px]"
               style={{
                 fontWeight: 200,
               }}

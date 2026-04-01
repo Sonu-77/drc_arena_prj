@@ -6,7 +6,7 @@ const SectionHeader = ({ title, desc }: any) => {
       </h2>
       {desc && (
         <p
-          className="text-[#F2F3D999] text-[clamp(13px,0.95vw,14px)] mt-2"
+          className="text-[#F2F3D999] text-[16px] mt-2"
           style={{
             fontWeight: 200,
           }}

@@ -181,6 +181,7 @@ const JournalTradeLogSection = ({ rows }: JournalTradeLogSectionProps) => {
 
                       <td
                         className={`relative px-[clamp(10px,1vw,16px)] py-[clamp(14px,1.4vw,24px)] text-[14px] text-[#F2F3D9] ${rowBorderClass}`}
+                        style={{fontWeight:400}}
                       >
                         <span className="absolute bottom-[20px] left-0 top-[20px] w-px bg-[#44374233]" />
                         {row.date}
@@ -188,6 +189,7 @@ const JournalTradeLogSection = ({ rows }: JournalTradeLogSectionProps) => {
 
                       <td
                         className={`relative px-[clamp(10px,1vw,16px)] py-[clamp(14px,1.4vw,24px)] text-[14px] text-right text-[#F2F3D9] ${rowBorderClass}`}
+                        style={{fontWeight:400}}
                       >
                         <span className="absolute bottom-[20px] left-0 top-[20px] w-px bg-[#44374233]" />
                         {row.entryPrice}
